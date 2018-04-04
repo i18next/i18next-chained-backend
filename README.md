@@ -71,3 +71,28 @@ via calling init:
   const Backend = new Backend();
   Backend.init(options);
 ```
+
+### more complete sample
+
+```js
+import i18next from 'i18next';
+import Backend from 'i18next-chained-backend';
+import Locize from 'i18next-locize-backend'; // load from service
+import XHR from 'i18next-xhr-backend'; // have a own xhr fallback
+
+i18next
+  .use(Backend)
+  .init({
+    backend: {
+      backends: [
+        Locize,  // primary
+        XHR      // fallback
+      ],
+      backendOptions: [{
+        projectId: 'myLocizeProjectId'
+      }, {
+        loadPath: '/locales/{{lng}}/{{ns}}.json' // xhr load path for my own fallback
+      }]
+    }
+  });
+```
