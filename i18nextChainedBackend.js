@@ -58,7 +58,7 @@ var Backend = function () {
       this.services = services;
       this.options = defaults(options, this.options || {}, getDefaults());
 
-      this.options.backends.forEach(function (b, i) {
+      this.options.backends && this.options.backends.forEach(function (b, i) {
         _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
         _this.backends[i].init(services, _this.options.backendOptions[i], i18nextOptions);
       });

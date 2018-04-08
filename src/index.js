@@ -17,7 +17,7 @@ class Backend {
     this.services = services;
     this.options = utils.defaults(options, this.options || {}, getDefaults());
 
-    this.options.backends.forEach((b, i) => {
+    this.options.backends && this.options.backends.forEach((b, i) => {
       this.backends[i] = this.backends[i] || utils.createClassOnDemand(b);
       this.backends[i].init(services, this.options.backendOptions[i], i18nextOptions);
     })
