@@ -71,7 +71,7 @@ var Backend = function () {
       var bLen = this.backends.length;
 
       var loadPosition = function loadPosition(pos) {
-        if (pos > bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
+        if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
 
         var backend = _this2.backends[pos];
         if (backend.read) {

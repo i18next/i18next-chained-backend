@@ -27,7 +27,7 @@ class Backend {
     let bLen = this.backends.length;
 
     const loadPosition = (pos) => {
-      if (pos > bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
+      if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
 
       const backend = this.backends[pos];
       if (backend.read) {
