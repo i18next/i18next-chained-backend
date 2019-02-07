@@ -98,34 +98,4 @@ describe('chained backend', () => {
 
   });
 
-
-  // describe('with loadPath function', () => {
-  //   let backend;
-  //   let loadPathSpy = sinon.spy(function(languages, namespaces) {
-  //     return 'http://localhost:9876/locales/' + languages[0] + '/' + namespaces[0] + '.json';
-  //   });
-  //
-  //   before(() => {
-  //     backend = new XHR({
-  //       interpolator: new Interpolator()
-  //     }, {
-  //       loadPath: loadPathSpy
-  //     });
-  //   });
-  //
-  //   describe('#read', () => {
-  //
-  //     it('should load data', (done) => {
-  //       backend.read('en', 'test', function(err, data) {
-  //         expect(err).to.be.not.ok;
-  //         expect(loadPathSpy.calledWith(['en'], ['test'])).to.be.ok;
-  //         expect(data).to.eql({key: 'passing'});
-  //         done();
-  //       });
-  //     });
-  //
-  //   });
-  //
-  // });
-
 });

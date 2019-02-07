@@ -69,7 +69,7 @@ via calling init:
 ```js
   import Backend from 'i18next-chained-backend';
   const Backend = new Backend();
-  Backend.init(options);
+  Backend.init(null, options);
 ```
 
 ### more complete sample

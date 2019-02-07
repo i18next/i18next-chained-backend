@@ -14,8 +14,8 @@ declare namespace I18NextChainedBackend {
 }
 
 declare class I18NextChainedBackend {
-  constructor(services: any, options?: I18NextChainedBackend.BackendOptions);
-  init(services: any, options?: I18NextChainedBackend.BackendOptions): void;
+  constructor(services?: any, options?: I18NextChainedBackend.BackendOptions);
+  init(services?: any, options?: I18NextChainedBackend.BackendOptions, i18nextOptions?: any): void;
   read(language: string, namespace: string, callback: I18NextChainedBackend.LoadCallback): void;
   create(languages: string | string[], namespace: string, key: string, fallbackValue: string): void;
   type: "backend";
