@@ -13,7 +13,7 @@ declare namespace I18NextChainedBackend {
   type LoadCallback = (error: any, result: string | false) => void;
 }
 
-declare class I18NextChainedBackend {
+export default class I18NextChainedBackend {
   constructor(services?: any, options?: I18NextChainedBackend.BackendOptions);
   init(services?: any, options?: I18NextChainedBackend.BackendOptions, i18nextOptions?: any): void;
   read(language: string, namespace: string, callback: I18NextChainedBackend.LoadCallback): void;
@@ -23,5 +23,3 @@ declare class I18NextChainedBackend {
   backends: any[];
   options: I18NextChainedBackend.BackendOptions;
 }
-
-export = I18NextChainedBackend;
