@@ -1,6 +1,6 @@
 {
   "name": "i18next-chained-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "backend layer for i18next to chain backends",
   "main": "./index.js",
   "types": "./index.d.ts",

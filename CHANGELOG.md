@@ -1,3 +1,7 @@
+### 1.0.1
+
+- typescript: fix types [6](https://github.com/i18next/i18next-chained-backend/pull/6)
+
 ### 1.0.0
 
 - typescript: add types [5](https://github.com/i18next/i18next-chained-backend/pull/5)
