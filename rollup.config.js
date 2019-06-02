@@ -1,31 +1,42 @@
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
 import { argv } from 'yargs';
 
 const format = argv.format || argv.f || 'iife';
-const compress = argv.uglify;
 
 const babelOptions = {
   exclude: 'node_modules/**',
-  presets: [['es2015', { modules: false }], 'stage-0'],
+  presets: [['@babel/env', { modules: false }]],
   babelrc: false
 };
 
-const dest = {
-  amd: `dist/amd/i18nextChainedBackend${compress ? '.min' : ''}.js`,
-  umd: `dist/umd/i18nextChainedBackend${compress ? '.min' : ''}.js`,
-  iife: `dist/iife/i18nextChainedBackend${compress ? '.min' : ''}.js`
-}[format];
+const name = 'i18nextChainedBackend'
 
-export default {
-  entry: 'src/index.js',
-  format,
-  plugins: [
-    babel(babelOptions),
-    nodeResolve({ jsnext: true })
-  ].concat(compress ? uglify() : []),
-  moduleName: 'i18nextChainedBackend',
-  //moduleId: 'i18nextXHRBackend',
-  dest
-};
+export default [
+  {
+    input: './src/index.js',
+    output: {
+      format,
+      name,
+      file: `dist/${format}/${name}.js`
+    },
+    plugins: [
+      babel(babelOptions),
+      nodeResolve()
+    ],
+  },
+  {
+    input: './src/index.js',
+    output: {
+      format,
+      name,
+      file: `dist/${format}/${name}.min.js`
+    },
+    plugins: [
+      babel(babelOptions),
+      nodeResolve(),
+      terser()
+    ],
+  }
+]
