@@ -1,3 +1,9 @@
+### 2.0.0
+
+- removes deprecated jsnext:main from package.json
+- Bundle all entry points with rollup [8](https://github.com/i18next/i18next-chained-backend/pull/8)
+- **note:** dist/es -> dist/esm, dist/commonjs -> dist/cjs (individual files -> one bundled file)
+
 ### 1.0.1
 
 - typescript: fix types [6](https://github.com/i18next/i18next-chained-backend/pull/6)
