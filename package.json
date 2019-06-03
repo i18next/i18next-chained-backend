@@ -4,7 +4,6 @@
   "description": "backend layer for i18next to chain backends",
   "main": "./dist/cjs/i18nextChainedBackend.js",
   "module": "./dist/esm/i18nextChainedBackend.js",
-  "jsnext:main": "./dist/esm/i18nextChainedBackend.js",
   "types": "./index.d.ts",
   "keywords": [
     "i18next",
