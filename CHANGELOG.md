@@ -1,3 +1,7 @@
+### 2.0.1
+
+- fixes attempt to save data on invalid response
+
 ### 2.0.0
 
 - removes deprecated jsnext:main from package.json
