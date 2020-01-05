@@ -32,7 +32,7 @@ class Backend {
       const backend = this.backends[pos];
       if (backend.read) {
         backend.read(language, namespace, (err, data) => {
-          if (data && Object.keys(data).length > -1) {
+          if (!err && data && Object.keys(data).length > -1) {
             callback(null, data, pos);
             savePosition(pos - 1, data); // save one in front
           } else {
