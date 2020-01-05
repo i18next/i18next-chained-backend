@@ -91,7 +91,7 @@
 
           if (backend.read) {
             backend.read(language, namespace, function (err, data) {
-              if (data && Object.keys(data).length > -1) {
+              if (!err && data && Object.keys(data).length > -1) {
                 callback(null, data, pos);
                 savePosition(pos - 1, data); // save one in front
               } else {
