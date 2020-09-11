@@ -78,7 +78,7 @@ via calling init:
 import i18next from 'i18next';
 import Backend from 'i18next-chained-backend';
 import Locize from 'i18next-locize-backend'; // load from service
-import XHR from 'i18next-xhr-backend'; // have a own xhr fallback
+import HttpApi from 'i18next-http-backend'; // have a own http fallback
 
 i18next
   .use(Backend)
@@ -86,16 +86,22 @@ i18next
     backend: {
       backends: [
         Locize,  // primary
-        XHR      // fallback
+        HttpApi      // fallback
       ],
       backendOptions: [{
         projectId: 'myLocizeProjectId'
       }, {
-        loadPath: '/locales/{{lng}}/{{ns}}.json' // xhr load path for my own fallback
+        loadPath: '/locales/{{lng}}/{{ns}}.json' // http api load path for my own fallback
       }]
     }
   });
 ```
+
+
+## IMPORTANT ADVICE for the usage in combination with saveMissing/updateMissing
+
+We suggest not to use mutliple backends in combination with saveMissing or updateMissing, because it may happen, that the trigger for this is based on stale data.
+
 
 --------------
 
