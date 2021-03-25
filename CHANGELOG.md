@@ -1,3 +1,7 @@
+### 2.1.0
+
+- Type PluginOptions properly [18](https://github.com/i18next/i18next-chained-backend/pull/18)
+
 ### 2.0.1
 
 - fixes attempt to save data on invalid response

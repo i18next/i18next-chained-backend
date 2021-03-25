@@ -1,7 +1,7 @@
-import Backend from '../src/';
-import Interpolator from 'i18next/dist/commonjs/Interpolator';
-import MockBackend from './MockBackend';
-
+const expect = require('expect.js')
+const Backend = require('../');
+const i18next = require('i18next');
+const MockBackend = require('./MockBackend');
 
 describe('chained backend', () => {
 
@@ -10,7 +10,7 @@ describe('chained backend', () => {
 
     before(() => {
       backend = new Backend({
-        interpolator: new Interpolator()
+        interpolator: i18next.services.interpolator
       }, {
         backends: [
           MockBackend,
@@ -50,7 +50,7 @@ describe('chained backend', () => {
 
     before(() => {
       backend = new Backend({
-        interpolator: new Interpolator()
+        interpolator: i18next.services.interpolator
       }, {
         backends: [
           MockBackend,

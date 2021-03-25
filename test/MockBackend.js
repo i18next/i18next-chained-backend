@@ -1,11 +1,9 @@
-import * as utils from '../src/utils.js';
-
 class MockBackend {
   constructor(services, options = {}) { /* irrelevant */ }
 
   init(services, options = {}, i18nextOptions) {
     this.services = services;
-    this.options = utils.defaults(options, this.options || {});
+    this.options = { ...options, ...this.options };
     this.cache = {};
     this.added = {};
 
@@ -38,4 +36,4 @@ class MockBackend {
 }
 MockBackend.type = 'backend';
 
-export default MockBackend;
+module.exports = MockBackend;
