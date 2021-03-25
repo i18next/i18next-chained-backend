@@ -97,6 +97,15 @@ i18next
   });
 ```
 
+## TypeScript
+To prevent TypeScript errors/conflicts with other plugins, we recommend placing `i18next-chained-backend` import above other plugins. Also, make sure to set `skipLibCheck` to `true` under your tsconfig file.
+
+```ts
+import i18next from 'i18next';
+import Backend from 'i18next-chained-backend'; // i18next-chained-backend should be placed here
+import Locize from 'i18next-locize-backend';
+import HttpApi from 'i18next-http-backend';
+```
 
 ## IMPORTANT ADVICE for the usage in combination with saveMissing/updateMissing
 
