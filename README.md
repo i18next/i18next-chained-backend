@@ -102,7 +102,7 @@ To prevent TypeScript errors/conflicts with other plugins, we recommend placing 
 
 ```ts
 import i18next from 'i18next';
-import Backend from 'i18next-chained-backend'; // i18next-chained-backend should be placed above
+import Backend from 'i18next-chained-backend'; // i18next-chained-backend should be placed here
 import Locize from 'i18next-locize-backend';
 import HttpApi from 'i18next-http-backend';
 ```
