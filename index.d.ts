@@ -36,3 +36,9 @@ export default class I18NextChainedBackend {
   backends: any[];
   options: I18NextChainedBackend.BackendOptions;
 }
+
+declare module "i18next" {
+  interface PluginOptions {
+    backend?: I18NextChainedBackend.BackendOptions;
+  }
+}
