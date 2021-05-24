@@ -1,3 +1,7 @@
+### 3.0.2
+
+- build to trigger Deno
+
 ### 3.0.1
 
 - backendOptions can be optional
