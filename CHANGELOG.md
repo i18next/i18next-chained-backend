@@ -1,3 +1,7 @@
+### 3.0.0
+
+- by default handle empty resources like failed backend reads
+
 ### 2.1.0
 
 - Type PluginOptions properly [18](https://github.com/i18next/i18next-chained-backend/pull/18)

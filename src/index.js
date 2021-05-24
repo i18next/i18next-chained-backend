@@ -2,6 +2,7 @@ import * as utils from './utils.js';
 
 function getDefaults() {
   return {
+    handleEmptyResourcesAsFailed: true
   };
 }
 
@@ -19,7 +20,7 @@ class Backend {
 
     this.options.backends && this.options.backends.forEach((b, i) => {
       this.backends[i] = this.backends[i] || utils.createClassOnDemand(b);
-      this.backends[i].init(services, this.options.backendOptions[i], i18nextOptions);
+      this.backends[i].init(services, this.options.backendOptions[i] || {}, i18nextOptions);
     })
   }
 
@@ -28,11 +29,13 @@ class Backend {
 
     const loadPosition = (pos) => {
       if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
+      const isLastBackend = pos === bLen - 1;
+      const lengthCheckAmount = this.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
 
       const backend = this.backends[pos];
       if (backend.read) {
         backend.read(language, namespace, (err, data) => {
-          if (!err && data && Object.keys(data).length > -1) {
+          if (!err && data && Object.keys(data).length > lengthCheckAmount) {
             callback(null, data, pos);
             savePosition(pos - 1, data); // save one in front
           } else {
@@ -68,6 +71,5 @@ class Backend {
 }
 
 Backend.type = 'backend';
-
 
 export default Backend;

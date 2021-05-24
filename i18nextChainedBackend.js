@@ -46,7 +46,9 @@
   }
 
   function getDefaults() {
-    return {};
+    return {
+      handleEmptyResourcesAsFailed: true
+    };
   }
 
   var Backend = /*#__PURE__*/function () {
@@ -72,7 +74,7 @@
         this.options.backends && this.options.backends.forEach(function (b, i) {
           _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
 
-          _this.backends[i].init(services, _this.options.backendOptions[i], i18nextOptions);
+          _this.backends[i].init(services, _this.options.backendOptions[i] || {}, i18nextOptions);
         });
       }
     }, {
@@ -85,11 +87,13 @@
         var loadPosition = function loadPosition(pos) {
           if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
 
+          var isLastBackend = pos === bLen - 1;
+          var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];
 
           if (backend.read) {
             backend.read(language, namespace, function (err, data) {
-              if (!err && data && Object.keys(data).length > -1) {
+              if (!err && data && Object.keys(data).length > lengthCheckAmount) {
                 callback(null, data, pos);
                 savePosition(pos - 1, data); // save one in front
               } else {

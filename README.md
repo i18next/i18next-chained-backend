@@ -86,7 +86,7 @@ i18next
     backend: {
       backends: [
         Locize,  // primary
-        HttpApi      // fallback
+        HttpApi  // fallback
       ],
       backendOptions: [{
         projectId: 'myLocizeProjectId'
