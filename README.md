@@ -7,6 +7,8 @@
 
 This is a i18next backend to chain multiple [other backends](https://www.i18next.com/plugins-and-utils.html#backends) and caches. So you can define an additional caching backend or fallback backends.
 
+Usage examples for caching configurations can be found [here](https://www.i18next.com/how-to/caching) and for fallback backends can be found [here](https://www.i18next.com/how-to/backend-fallback).
+
 # Getting started
 
 Source can be loaded via [npm](https://www.npmjs.com/package/i18next-chained-backend) or [downloaded](https://github.com/i18next/i18next-chained-backend/blob/master/i18nextBackendBackend.min.js) from this repo.
