@@ -1,3 +1,7 @@
+### 3.0.1
+
+- backendOptions can be optional
+
 ### 3.0.0
 
 - by default handle empty resources like failed backend reads

@@ -74,7 +74,7 @@
         this.options.backends && this.options.backends.forEach(function (b, i) {
           _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
 
-          _this.backends[i].init(services, _this.options.backendOptions[i] || {}, i18nextOptions);
+          _this.backends[i].init(services, _this.options.backendOptions && _this.options.backendOptions[i] || {}, i18nextOptions);
         });
       }
     }, {

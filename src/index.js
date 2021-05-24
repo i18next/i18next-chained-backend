@@ -20,7 +20,7 @@ class Backend {
 
     this.options.backends && this.options.backends.forEach((b, i) => {
       this.backends[i] = this.backends[i] || utils.createClassOnDemand(b);
-      this.backends[i].init(services, this.options.backendOptions[i] || {}, i18nextOptions);
+      this.backends[i].init(services, (this.options.backendOptions && this.options.backendOptions[i]) || {}, i18nextOptions);
     })
   }
 
