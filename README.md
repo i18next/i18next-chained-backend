@@ -99,6 +99,11 @@ i18next
   });
 ```
 
+*More [locize](https://locize.com) examples can be found here:*
+- *[Caching](https://docs.locize.com/more/caching/alternative-caching)*
+- *[Backend Fallback](https://docs.locize.com/more/backend-fallback)*
+- *[Multiple projects in same i18next instance](https://docs.locize.com/more/general-questions/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website)*
+
 ## TypeScript
 To prevent TypeScript errors/conflicts with other plugins, we recommend placing `i18next-chained-backend` import above other plugins. Also, make sure to set `skipLibCheck` to `true` under your tsconfig file.
 
