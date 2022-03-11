@@ -5,9 +5,14 @@
 [![npm version](https://img.shields.io/npm/v/i18next-chained-backend.svg?style=flat-square)](https://www.npmjs.com/package/i18next-chained-backend)
 [![David](https://img.shields.io/david/i18next/i18next-chained-backend.svg?style=flat-square)](https://david-dm.org/i18next/i18next-chained-backend)
 
-This is a i18next backend to chain multiple [other backends](https://www.i18next.com/plugins-and-utils.html#backends) and caches. So you can define an additional caching backend or fallback backends.
+This is a i18next backend to chain multiple [other backends](https://www.i18next.com/overview/plugins-and-utils#backends) and caches. So you can define an additional caching backend or fallback backends.
 
 Usage examples for caching configurations can be found [here](https://www.i18next.com/how-to/caching) and for fallback backends can be found [here](https://www.i18next.com/how-to/backend-fallback).
+
+## How it works
+
+For each [backend read call](https://www.i18next.com/misc/creating-own-plugins#backend) (so for each language and namespace combination), it will try to read from from all backends in order until a backend returns some resources.
+So if it does not find the resource (language + namespace) in the first backend, it goes to the next, etc.
 
 # Getting started
 
