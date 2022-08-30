@@ -63,9 +63,9 @@ class Backend {
   }
 
 
-  create(languages, namespace, key, fallbackValue) {
+  create(languages, namespace, key, fallbackValue, callback, options) {
     this.backends.forEach(b => {
-      if (b.create) b.create(languages, namespace, key, fallbackValue);
+      if (b.create) b.create(languages, namespace, key, fallbackValue, null, options);
     });
   }
 }

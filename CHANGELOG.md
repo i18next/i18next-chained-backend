@@ -1,3 +1,7 @@
+### 3.1.0
+
+- pass down options to create function
+
 ### 3.0.2
 
 - build to trigger Deno

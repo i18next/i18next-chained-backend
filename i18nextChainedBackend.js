@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.i18nextChainedBackend = factory());
-}(this, (function () { 'use strict';
+})(this, (function () { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -23,6 +23,9 @@
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -121,9 +124,9 @@
       }
     }, {
       key: "create",
-      value: function create(languages, namespace, key, fallbackValue) {
+      value: function create(languages, namespace, key, fallbackValue, callback, options) {
         this.backends.forEach(function (b) {
-          if (b.create) b.create(languages, namespace, key, fallbackValue);
+          if (b.create) b.create(languages, namespace, key, fallbackValue, null, options);
         });
       }
     }]);
@@ -135,4 +138,4 @@
 
   return Backend;
 
-})));
+}));
