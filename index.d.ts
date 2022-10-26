@@ -38,7 +38,7 @@ export default class I18NextChainedBackend {
 }
 
 declare module "i18next" {
-  interface PluginOptions {
+  interface CustomPluginOptions {
     backend?: I18NextChainedBackend.BackendOptions;
   }
 }

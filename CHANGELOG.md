@@ -1,3 +1,7 @@
+### 4.0.0
+
+- typescript fix for i18next v22
+
 ### 3.1.0
 
 - pass down options to create function

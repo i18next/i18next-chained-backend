@@ -19,7 +19,6 @@
       Object.defineProperty(target, descriptor.key, descriptor);
     }
   }
-
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
@@ -53,30 +52,24 @@
       handleEmptyResourcesAsFailed: true
     };
   }
-
   var Backend = /*#__PURE__*/function () {
     function Backend(services) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
       _classCallCheck(this, Backend);
-
       this.backends = [];
       this.type = 'backend';
       this.init(services, options);
     }
-
     _createClass(Backend, [{
       key: "init",
       value: function init(services) {
         var _this = this;
-
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var i18nextOptions = arguments.length > 2 ? arguments[2] : undefined;
         this.services = services;
         this.options = defaults(options, this.options || {}, getDefaults());
         this.options.backends && this.options.backends.forEach(function (b, i) {
           _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
-
           _this.backends[i].init(services, _this.options.backendOptions && _this.options.backendOptions[i] || {}, i18nextOptions);
         });
       }
@@ -84,16 +77,12 @@
       key: "read",
       value: function read(language, namespace, callback) {
         var _this2 = this;
-
         var bLen = this.backends.length;
-
         var loadPosition = function loadPosition(pos) {
           if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
-
           var isLastBackend = pos === bLen - 1;
           var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];
-
           if (backend.read) {
             backend.read(language, namespace, function (err, data) {
               if (!err && data && Object.keys(data).length > lengthCheckAmount) {
@@ -111,7 +100,6 @@
         var savePosition = function savePosition(pos, data) {
           if (pos < 0) return;
           var backend = _this2.backends[pos];
-
           if (backend.save) {
             backend.save(language, namespace, data);
             savePosition(pos - 1, data);
@@ -119,7 +107,6 @@
             savePosition(pos - 1, data);
           }
         };
-
         loadPosition(0);
       }
     }, {
@@ -130,10 +117,8 @@
         });
       }
     }]);
-
     return Backend;
   }();
-
   Backend.type = 'backend';
 
   return Backend;
