@@ -14,6 +14,7 @@ declare namespace I18NextChainedBackend {
 }
 
 export default class I18NextChainedBackend {
+  static type: "backend";
   constructor(services?: any, options?: I18NextChainedBackend.BackendOptions);
   init(
     services?: any,
