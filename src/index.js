@@ -34,14 +34,35 @@ class Backend {
 
       const backend = this.backends[pos];
       if (backend.read) {
-        backend.read(language, namespace, (err, data) => {
+        const resolver = (err, data) => {
           if (!err && data && Object.keys(data).length > lengthCheckAmount) {
             callback(null, data, pos);
             savePosition(pos - 1, data); // save one in front
           } else {
             loadPosition(pos + 1); // try load from next
           }
-        });
+        }
+
+        const fc = backend.read.bind(backend)
+        if (fc.length === 2) {
+          // no callback
+          try {
+            const r = fc(language, namespace)
+            if (r && typeof r.then === 'function') {
+              // promise
+              r.then((data) => resolver(null, data)).catch(resolver)
+            } else {
+              // sync
+              resolver(null, r)
+            }
+          } catch (err) {
+            resolver(err)
+          }
+          return
+        }
+
+        // normal with callback
+        fc(language, namespace, resolver)
       } else {
         loadPosition(pos + 1); // try load from next
       }
@@ -63,9 +84,35 @@ class Backend {
   }
 
 
-  create(languages, namespace, key, fallbackValue, callback, options) {
+  create(languages, namespace, key, fallbackValue, clb = () => {}, opts = {}) {
     this.backends.forEach(b => {
-      if (b.create) b.create(languages, namespace, key, fallbackValue, null, options);
+      if (!b.create) return
+
+      const fc = b.create.bind(b)
+      if (fc.length < 6) {
+        // no callback
+        try {
+          let r
+          if (fc.length === 5) { // future callback-less api for i18next-locize-backend
+            r = fc(languages, namespace, key, fallbackValue, opts)
+          } else {
+            r = fc(languages, namespace, key, fallbackValue)
+          }
+          if (r && typeof r.then === 'function') {
+            // promise
+            r.then((data) => clb(null, data)).catch(clb)
+          } else {
+            // sync
+            clb(null, r)
+          }
+        } catch (err) {
+          clb(err)
+        }
+        return
+      }
+
+      // normal with callback
+      fc(languages, namespace, key, fallbackValue, clb /* unused callback */, opts)
     });
   }
 }

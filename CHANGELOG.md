@@ -1,3 +1,7 @@
+### 4.1.0
+
+- extend to accept also backends with promise / async-await signature
+
 ### 4.0.1
 
 - typescript: static type prop

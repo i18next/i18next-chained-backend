@@ -84,14 +84,37 @@
           var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];
           if (backend.read) {
-            backend.read(language, namespace, function (err, data) {
+            var resolver = function resolver(err, data) {
               if (!err && data && Object.keys(data).length > lengthCheckAmount) {
                 callback(null, data, pos);
                 savePosition(pos - 1, data); // save one in front
               } else {
                 loadPosition(pos + 1); // try load from next
               }
-            });
+            };
+
+            var fc = backend.read.bind(backend);
+            if (fc.length === 2) {
+              // no callback
+              try {
+                var r = fc(language, namespace);
+                if (r && typeof r.then === 'function') {
+                  // promise
+                  r.then(function (data) {
+                    return resolver(null, data);
+                  })["catch"](resolver);
+                } else {
+                  // sync
+                  resolver(null, r);
+                }
+              } catch (err) {
+                resolver(err);
+              }
+              return;
+            }
+
+            // normal with callback
+            fc(language, namespace, resolver);
           } else {
             loadPosition(pos + 1); // try load from next
           }
@@ -111,9 +134,39 @@
       }
     }, {
       key: "create",
-      value: function create(languages, namespace, key, fallbackValue, callback, options) {
+      value: function create(languages, namespace, key, fallbackValue) {
+        var clb = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : function () {};
+        var opts = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
         this.backends.forEach(function (b) {
-          if (b.create) b.create(languages, namespace, key, fallbackValue, null, options);
+          if (!b.create) return;
+          var fc = b.create.bind(b);
+          if (fc.length < 6) {
+            // no callback
+            try {
+              var r;
+              if (fc.length === 5) {
+                // future callback-less api for i18next-locize-backend
+                r = fc(languages, namespace, key, fallbackValue, opts);
+              } else {
+                r = fc(languages, namespace, key, fallbackValue);
+              }
+              if (r && typeof r.then === 'function') {
+                // promise
+                r.then(function (data) {
+                  return clb(null, data);
+                })["catch"](clb);
+              } else {
+                // sync
+                clb(null, r);
+              }
+            } catch (err) {
+              clb(err);
+            }
+            return;
+          }
+
+          // normal with callback
+          fc(languages, namespace, key, fallbackValue, clb /* unused callback */, opts);
         });
       }
     }]);

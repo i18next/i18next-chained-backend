@@ -29,6 +29,25 @@ class MockBackend {
       }, 50);
     }
   }
+  // read(language, namespace) {
+  //   if (this.options.lngs.indexOf(language) > -1 || this.cache[`${language}.${namespace}`]) {
+  //     return new Promise((resolve) => {
+  //       setTimeout(() => {
+  //         resolve(this.options.isCache ? this.cache[`${language}.${namespace}`] : {
+  //           name: this.options.name,
+  //           lng: language,
+  //           ns: namespace
+  //         })
+  //       }, 50);
+  //     })
+  //   } else {
+  //     return new Promise((resolve) => {
+  //       setTimeout(() => {
+  //         resolve(new Error('not available'))
+  //       }, 50);
+  //     })
+  //   }
+  // }
 
   create(languages, namespace, key, fallbackValue) {
     this.added[`${languages}.${namespace}.${key}`] = fallbackValue;
