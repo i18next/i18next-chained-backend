@@ -1,33 +1,32 @@
-declare namespace I18NextChainedBackend {
-  interface BackendOptions {
-    /**
-     * array of existing i18next backends from https://www.i18next.com/plugins-and-utils.html#backends
-     */
-    backends?: any[];
-    /**
-     * array of options in order of backends above
-     */
-    backendOptions?: any[];
-  }
+import { BackendModule, ReadCallback } from "i18next";
 
-  type LoadCallback = (error: any, result: string | false) => void;
+export interface ChainedBackendOptions {
+  /**
+   * array of existing i18next backends from https://www.i18next.com/plugins-and-utils.html#backends
+   */
+  backends?: any[];
+  /**
+   * array of options in order of backends above
+   */
+  backendOptions?: any[];
 }
 
-export default class I18NextChainedBackend {
+export default class I18NextChainedBackend
+  implements BackendModule<ChainedBackendOptions> {
   static type: "backend";
-  constructor(services?: any, options?: I18NextChainedBackend.BackendOptions);
+  constructor(services?: any, options?: ChainedBackendOptions);
   init(
     services?: any,
-    options?: I18NextChainedBackend.BackendOptions,
+    options?: ChainedBackendOptions,
     i18nextOptions?: any
   ): void;
   read(
     language: string,
     namespace: string,
-    callback: I18NextChainedBackend.LoadCallback
+    callback: ReadCallback
   ): void;
   create(
-    languages: string | string[],
+    languages: string[],
     namespace: string,
     key: string,
     fallbackValue: string
@@ -35,11 +34,5 @@ export default class I18NextChainedBackend {
   type: "backend";
   services: any;
   backends: any[];
-  options: I18NextChainedBackend.BackendOptions;
-}
-
-declare module "i18next" {
-  interface CustomPluginOptions {
-    backend?: I18NextChainedBackend.BackendOptions;
-  }
+  options: ChainedBackendOptions;
 }

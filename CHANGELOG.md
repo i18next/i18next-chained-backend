@@ -1,3 +1,7 @@
+### 4.2.0
+
+- Export the backend options type
+
 ### 4.1.0
 
 - extend to accept also backends with promise / async-await signature
