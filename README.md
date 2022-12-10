@@ -110,13 +110,30 @@ i18next
 - *[Multiple projects in same i18next instance](https://docs.locize.com/more/general-questions/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website)*
 
 ## TypeScript
-To prevent TypeScript errors/conflicts with other plugins, we recommend placing `i18next-chained-backend` import above other plugins. Also, make sure to set `skipLibCheck` to `true` under your tsconfig file.
+
+To properly type the backend options, you can import the `ChainedBackendOptions` interface and use it as a generic type parameter to the i18next's `init` method, e.g.:
 
 ```ts
-import i18next from 'i18next';
-import Backend from 'i18next-chained-backend'; // i18next-chained-backend should be placed here
-import Locize from 'i18next-locize-backend';
-import HttpApi from 'i18next-http-backend';
+import i18n from 'i18next'
+import ChainedBackend, { ChainedBackendOptions } from 'i18next-chained-backend'
+
+i18n
+  .use(ChainedBackend)
+  .init<ChainedBackendOptions>({
+    backend: {
+      backends: [
+        Locize,  // primary
+        HttpApi  // fallback
+      ],
+      backendOptions: [{
+        projectId: 'myLocizeProjectId'
+      }, {
+        loadPath: '/locales/{{lng}}/{{ns}}.json' // http api load path for my own fallback
+      }]
+    }
+
+    // other i18next options
+  })
 ```
 
 ## IMPORTANT ADVICE for the usage in combination with saveMissing/updateMissing
