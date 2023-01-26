@@ -1,9 +1,7 @@
 # Introduction
 
 [![Travis](https://img.shields.io/travis/i18next/i18next-chained-backend/master.svg?style=flat-square)](https://travis-ci.org/i18next/i18next-chained-backend)
-[![Coveralls](https://img.shields.io/coveralls/i18next/i18next-chained-backend/master.svg?style=flat-square)](https://coveralls.io/github/i18next/i18next-chained-backend)
 [![npm version](https://img.shields.io/npm/v/i18next-chained-backend.svg?style=flat-square)](https://www.npmjs.com/package/i18next-chained-backend)
-[![David](https://img.shields.io/david/i18next/i18next-chained-backend.svg?style=flat-square)](https://david-dm.org/i18next/i18next-chained-backend)
 
 This is a i18next backend to chain multiple [other backends](https://www.i18next.com/overview/plugins-and-utils#backends) and caches. So you can define an additional caching backend or fallback backends.
 
