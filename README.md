@@ -41,7 +41,7 @@ i18next
 
 ```js
 {
-  // array of existing i18next backends from https://www.i18next.com/plugins-and-utils.html#backends
+  // array of existing i18next backends from https://www.i18next.com/overview/plugins-and-utils#backends
   backends: [],
 
   // array of options in order of backends above
