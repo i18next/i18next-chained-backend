@@ -75,8 +75,33 @@
 
   function getDefaults() {
     return {
-      handleEmptyResourcesAsFailed: true
+      handleEmptyResourcesAsFailed: true,
+      cacheHitMode: 'none'
     };
+  }
+  function handleCorrectReadFunction(backend, language, namespace, resolver) {
+    var fc = backend.read.bind(backend);
+    if (fc.length === 2) {
+      // no callback
+      try {
+        var r = fc(language, namespace);
+        if (r && typeof r.then === 'function') {
+          // promise
+          r.then(function (data) {
+            return resolver(null, data);
+          })["catch"](resolver);
+        } else {
+          // sync
+          resolver(null, r);
+        }
+      } catch (err) {
+        resolver(err);
+      }
+      return;
+    }
+
+    // normal with callback
+    fc(language, namespace, resolver);
   }
   var Backend = /*#__PURE__*/function () {
     function Backend(services) {
@@ -105,42 +130,34 @@
         var _this2 = this;
         var bLen = this.backends.length;
         var loadPosition = function loadPosition(pos) {
-          if (pos >= bLen) return callback(new Error('non of the backend loaded data;', true)); // failed pass retry flag
+          if (pos >= bLen) return callback(new Error('non of the backend loaded data', true)); // failed pass retry flag
           var isLastBackend = pos === bLen - 1;
           var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];
           if (backend.read) {
-            var resolver = function resolver(err, data) {
+            handleCorrectReadFunction(backend, language, namespace, function (err, data) {
               if (!err && data && Object.keys(data).length > lengthCheckAmount) {
                 callback(null, data, pos);
                 savePosition(pos - 1, data); // save one in front
+                if (backend.save && _this2.options.cacheHitMode && ['refresh', 'refreshAndUpdateStore'].indexOf(_this2.options.cacheHitMode) > -1) {
+                  var nextBackend = _this2.backends[pos + 1];
+                  if (nextBackend && nextBackend.read) {
+                    handleCorrectReadFunction(nextBackend, language, namespace, function (err, data) {
+                      if (err) return;
+                      if (!data) return;
+                      if (Object.keys(data).length <= lengthCheckAmount) return;
+                      savePosition(pos, data);
+                      if (_this2.options.cacheHitMode !== 'refreshAndUpdateStore') return;
+                      if (_this2.services && _this2.services.resourceStore) {
+                        _this2.services.resourceStore.addResourceBundle(language, namespace, data);
+                      }
+                    });
+                  }
+                }
               } else {
                 loadPosition(pos + 1); // try load from next
               }
-            };
-
-            var fc = backend.read.bind(backend);
-            if (fc.length === 2) {
-              // no callback
-              try {
-                var r = fc(language, namespace);
-                if (r && typeof r.then === 'function') {
-                  // promise
-                  r.then(function (data) {
-                    return resolver(null, data);
-                  })["catch"](resolver);
-                } else {
-                  // sync
-                  resolver(null, r);
-                }
-              } catch (err) {
-                resolver(err);
-              }
-              return;
-            }
-
-            // normal with callback
-            fc(language, namespace, resolver);
+            });
           } else {
             loadPosition(pos + 1); // try load from next
           }

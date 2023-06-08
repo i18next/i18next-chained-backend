@@ -1,3 +1,7 @@
+### 4.3.0
+
+- introduce cacheHitMode
+
 ### 4.2.0
 
 - Export the backend options type

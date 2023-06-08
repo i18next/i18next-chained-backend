@@ -9,6 +9,13 @@ export interface ChainedBackendOptions {
    * array of options in order of backends above
    */
   backendOptions?: any[];
+  /**
+   * In case of caching it tries to:
+   * refresh: refresh the cache by loading from the next backend and updates the cache
+   * refreshAndUpdateStore: refresh the cache by loading from the next backend, updates the cache and also update the i18next resource store
+   * @default 'none'
+   */
+  cacheHitMode?: 'none' | 'refresh' | 'refreshAndUpdateStore';
 }
 
 export default class I18NextChainedBackend

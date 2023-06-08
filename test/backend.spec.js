@@ -2,6 +2,7 @@ const expect = require('expect.js')
 const Backend = require('../');
 const i18next = require('i18next');
 const MockBackend = require('./MockBackend');
+const resourcesToBackend = require('i18next-resources-to-backend');
 
 describe('chained backend', () => {
 
@@ -92,6 +93,111 @@ describe('chained backend', () => {
             });
           });
 
+        });
+      });
+    });
+
+  });
+
+  describe('refresh cache', () => {
+    let backend;
+    const myResources = {
+      en: {
+        test: {
+          keyOne: 'key one',
+          keyTwo: 'key two'
+        }
+      }
+    }
+
+    before(() => {
+      backend = new Backend({
+        interpolator: i18next.services.interpolator
+      }, {
+        cacheHitMode: 'refresh',
+        backends: [
+          MockBackend,
+          resourcesToBackend((language, namespace) => ({ ...myResources[language][namespace] }))
+        ],
+        backendOptions: [{
+          name: 'cache1',
+          lngs: ['de', 'en'],
+          isCache: true
+        }]
+      });
+    });
+
+    it('should load / cache data', (done) => {
+      backend.read('en', 'test', function(err, data, pos) {
+        expect(pos).to.eql(1);
+        expect(data.keyOne).to.eql('key one');
+
+        // simulate changed translations
+        myResources.en.test.keyOne += ' changed'
+
+        // hit cache and trigger cache refresh
+        backend.read('en', 'test', function(err, data, pos) {
+          expect(pos).to.eql(0);
+          expect(data.keyOne).to.eql('key one');
+
+          // should now get the updated value
+          backend.read('en', 'test', function(err, data, pos) {
+            expect(pos).to.eql(0);
+            expect(data.keyOne).to.eql('key one changed');
+  
+            done();
+          });
+        });
+      });
+    });
+
+  });
+
+  describe('refresh cache and update i18next store', () => {
+    let i18nInst;
+    const myResources = {
+      en: {
+        myNS: {
+          keyOne: 'key one',
+          keyTwo: 'key two'
+        }
+      }
+    }
+
+    before((done) => {
+      i18nInst = i18next.createInstance();
+      i18nInst.use(Backend).init({
+        // debug: true,
+        fallbackLng: 'en',
+        ns: [],
+        backend: {
+          cacheHitMode: 'refreshAndUpdateStore',
+          backends: [
+            MockBackend,
+            resourcesToBackend((language, namespace) => ({ ...myResources[language][namespace] }))
+          ],
+          backendOptions: [{
+            name: 'cache1',
+            lngs: ['de', 'en'],
+            isCache: true
+          }]
+        }
+      }, done);
+    });
+
+    it('should load / cache data', (done) => {
+      i18nInst.loadNamespaces('myNS', () => {
+        expect(i18nInst.t('keyOne', { ns: 'myNS' })).to.eql('key one');
+
+        // simulate changed translations
+        myResources.en.myNS.keyOne += ' changed';
+        
+        i18nInst.reloadResources(['en'], ['myNS'], () => {
+          // give a chance to update
+          setImmediate(() => {
+            expect(i18nInst.t('keyOne', { ns: 'myNS' })).to.eql('key one changed');
+            done();
+          });
         });
       });
     });

@@ -77,6 +77,34 @@ via calling init:
   Backend.init(null, options);
 ```
 
+### caching example
+
+```js
+import i18next from 'i18next';
+import Backend from 'i18next-chained-backend';
+import LocalStorageBackend from 'i18next-localstorage-backend'; // load from local storage
+import HttpApi from 'i18next-http-backend'; // have a own http fallback
+
+i18next
+  .use(Backend)
+  .init({
+    backend: {
+      backends: [
+        LocalStorageBackend,  // primary
+        HttpApi  // fallback
+      ],
+      backendOptions: [{
+        projectId: 'myLocizeProjectId'
+      }, {
+        loadPath: '/locales/{{lng}}/{{ns}}.json' // http api load path for my own fallback
+      }],
+      // cacheHitMode: 'none' // (default)
+      // cacheHitMode: 'refresh' // tries to refresh the cache by loading from the next backend and updates the cache
+      // cacheHitMode: 'refreshAndUpdateStore' // tries to refresh the cache by loading from the next backend, updates the cache and also update the i18next resource store
+    }
+  });
+```
+
 ### more complete sample
 
 ```js
