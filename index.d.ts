@@ -16,6 +16,13 @@ export interface ChainedBackendOptions {
    * @default 'none'
    */
   cacheHitMode?: 'none' | 'refresh' | 'refreshAndUpdateStore';
+
+  /**
+   * can be used to reload resources in a specific
+   * interval (useful in server environments)
+   * @default false
+   */
+  reloadInterval?: false | number;
 }
 
 export default class I18NextChainedBackend

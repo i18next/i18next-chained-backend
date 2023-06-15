@@ -1,3 +1,7 @@
+### 4.4.0
+
+- introduce reloadInterval
+
 ### 4.3.0
 
 - introduce cacheHitMode

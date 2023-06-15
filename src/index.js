@@ -3,7 +3,8 @@ import * as utils from './utils.js'
 function getDefaults() {
   return {
     handleEmptyResourcesAsFailed: true,
-    cacheHitMode: 'none'
+    cacheHitMode: 'none',
+    // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
   }
 }
 
@@ -31,21 +32,27 @@ function handleCorrectReadFunction(backend, language, namespace, resolver) {
 }
 
 class Backend {
-  constructor(services, options = {}) {
+  constructor(services, options = {}, i18nextOptions = {}) {
     this.backends = []
     this.type = 'backend'
+    this.allOptions = i18nextOptions
 
     this.init(services, options)
   }
 
-  init(services, options = {}, i18nextOptions) {
+  init(services, options = {}, i18nextOptions = {}) {
     this.services = services
     this.options = utils.defaults(options, this.options || {}, getDefaults())
+    this.allOptions = i18nextOptions
 
     this.options.backends && this.options.backends.forEach((b, i) => {
       this.backends[i] = this.backends[i] || utils.createClassOnDemand(b)
       this.backends[i].init(services, (this.options.backendOptions && this.options.backendOptions[i]) || {}, i18nextOptions)
     })
+
+    if (this.services && this.options.reloadInterval) {
+      setInterval(() => this.reload(), this.options.reloadInterval)
+    }
   }
 
   read(language, namespace, callback) {
@@ -131,6 +138,35 @@ class Backend {
 
       // normal with callback
       fc(languages, namespace, key, fallbackValue, clb /* unused callback */, opts)
+    })
+  }
+
+  reload () {
+    const { backendConnector, languageUtils, logger } = this.services
+    const currentLanguage = backendConnector.language
+    if (currentLanguage && currentLanguage.toLowerCase() === 'cimode') return // avoid loading resources for cimode
+
+    const toLoad = []
+    const append = (lng) => {
+      const lngs = languageUtils.toResolveHierarchy(lng)
+      lngs.forEach(l => {
+        if (toLoad.indexOf(l) < 0) toLoad.push(l)
+      })
+    }
+
+    append(currentLanguage)
+
+    if (this.allOptions.preload) this.allOptions.preload.forEach((l) => append(l))
+
+    toLoad.forEach(lng => {
+      this.allOptions.ns.forEach(ns => {
+        backendConnector.read(lng, ns, 'read', null, null, (err, data) => {
+          if (err) logger.warn(`loading namespace ${ns} for language ${lng} failed`, err)
+          if (!err && data) logger.log(`loaded namespace ${ns} for language ${lng}`, data)
+
+          backendConnector.loaded(`${lng}|${ns}`, err, data)
+        })
+      })
     })
   }
 }

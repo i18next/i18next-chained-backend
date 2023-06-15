@@ -101,6 +101,7 @@ i18next
       // cacheHitMode: 'none' // (default)
       // cacheHitMode: 'refresh' // tries to refresh the cache by loading from the next backend and updates the cache
       // cacheHitMode: 'refreshAndUpdateStore' // tries to refresh the cache by loading from the next backend, updates the cache and also update the i18next resource store
+      // reloadInterval: 60 * 60 * 1000 // can be used to reload resources in a specific interval (useful in server environments)
     }
   });
 ```

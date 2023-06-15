@@ -77,8 +77,10 @@
     return {
       handleEmptyResourcesAsFailed: true,
       cacheHitMode: 'none'
+      // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
     };
   }
+
   function handleCorrectReadFunction(backend, language, namespace, resolver) {
     var fc = backend.read.bind(backend);
     if (fc.length === 2) {
@@ -106,9 +108,11 @@
   var Backend = /*#__PURE__*/function () {
     function Backend(services) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var i18nextOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       _classCallCheck(this, Backend);
       this.backends = [];
       this.type = 'backend';
+      this.allOptions = i18nextOptions;
       this.init(services, options);
     }
     _createClass(Backend, [{
@@ -116,13 +120,19 @@
       value: function init(services) {
         var _this = this;
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var i18nextOptions = arguments.length > 2 ? arguments[2] : undefined;
+        var i18nextOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
         this.services = services;
         this.options = defaults(options, this.options || {}, getDefaults());
+        this.allOptions = i18nextOptions;
         this.options.backends && this.options.backends.forEach(function (b, i) {
           _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
           _this.backends[i].init(services, _this.options.backendOptions && _this.options.backendOptions[i] || {}, i18nextOptions);
         });
+        if (this.services && this.options.reloadInterval) {
+          setInterval(function () {
+            return _this.reload();
+          }, this.options.reloadInterval);
+        }
       }
     }, {
       key: "read",
@@ -210,6 +220,38 @@
 
           // normal with callback
           fc(languages, namespace, key, fallbackValue, clb /* unused callback */, opts);
+        });
+      }
+    }, {
+      key: "reload",
+      value: function reload() {
+        var _this3 = this;
+        var _this$services = this.services,
+          backendConnector = _this$services.backendConnector,
+          languageUtils = _this$services.languageUtils,
+          logger = _this$services.logger;
+        var currentLanguage = backendConnector.language;
+        if (currentLanguage && currentLanguage.toLowerCase() === 'cimode') return; // avoid loading resources for cimode
+
+        var toLoad = [];
+        var append = function append(lng) {
+          var lngs = languageUtils.toResolveHierarchy(lng);
+          lngs.forEach(function (l) {
+            if (toLoad.indexOf(l) < 0) toLoad.push(l);
+          });
+        };
+        append(currentLanguage);
+        if (this.allOptions.preload) this.allOptions.preload.forEach(function (l) {
+          return append(l);
+        });
+        toLoad.forEach(function (lng) {
+          _this3.allOptions.ns.forEach(function (ns) {
+            backendConnector.read(lng, ns, 'read', null, null, function (err, data) {
+              if (err) logger.warn("loading namespace ".concat(ns, " for language ").concat(lng, " failed"), err);
+              if (!err && data) logger.log("loaded namespace ".concat(ns, " for language ").concat(lng), data);
+              backendConnector.loaded("".concat(lng, "|").concat(ns), err, data);
+            });
+          });
         });
       }
     }]);
