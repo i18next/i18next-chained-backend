@@ -101,6 +101,7 @@ i18next
       // cacheHitMode: 'refresh' // tries to refresh the cache by loading from the next backend and updates the cache
       // cacheHitMode: 'refreshAndUpdateStore' // tries to refresh the cache by loading from the next backend, updates the cache and also update the i18next resource store
       // reloadInterval: 60 * 60 * 1000 // can be used to reload resources in a specific interval (useful in server environments)
+      // refreshExpirationTime: 7 * 24 * 60 * 60 * 1000 // In case of caching with 'refresh' or 'refreshAndUpdateStore', it will only fetch from the next backend if the cached namespace is expired. Only supported if the backend returns the saved timestamp, like i18next-fs-backend, i18next-localstorage-backend
     }
   });
 ```

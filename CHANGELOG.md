@@ -1,3 +1,7 @@
+### 4.5.0
+
+- introduce refreshExpirationTime
+
 ### 4.4.0
 
 - introduce reloadInterval

@@ -78,6 +78,7 @@
       handleEmptyResourcesAsFailed: true,
       cacheHitMode: 'none'
       // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
+      // refreshExpirationTime: 60 * 60 * 1000
     };
   }
 
@@ -145,11 +146,12 @@
           var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];
           if (backend.read) {
-            handleCorrectReadFunction(backend, language, namespace, function (err, data) {
+            handleCorrectReadFunction(backend, language, namespace, function (err, data, savedAt) {
               if (!err && data && Object.keys(data).length > lengthCheckAmount) {
                 callback(null, data, pos);
                 savePosition(pos - 1, data); // save one in front
                 if (backend.save && _this2.options.cacheHitMode && ['refresh', 'refreshAndUpdateStore'].indexOf(_this2.options.cacheHitMode) > -1) {
+                  if (savedAt && _this2.options.refreshExpirationTime && savedAt + _this2.options.refreshExpirationTime > Date.now()) return;
                   var nextBackend = _this2.backends[pos + 1];
                   if (nextBackend && nextBackend.read) {
                     handleCorrectReadFunction(nextBackend, language, namespace, function (err, data) {

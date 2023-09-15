@@ -23,6 +23,13 @@ export interface ChainedBackendOptions {
    * @default false
    */
   reloadInterval?: false | number;
+
+  /**
+   * In case of caching with 'refresh' or 'refreshAndUpdateStore', it will only fetch from the next backend if the cached namespace is expired.
+   * Only supported if the backend returns the saved timestamp, like i18next-fs-backend, i18next-localstorage-backend
+   * @default undefined
+   */
+  refreshExpirationTime?: number;
 }
 
 export default class I18NextChainedBackend

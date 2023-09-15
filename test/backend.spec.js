@@ -204,4 +204,65 @@ describe('chained backend', () => {
 
   });
 
+  describe('refresh cache and update i18next store only if expired', () => {
+    let i18nInst;
+    const myResources = {
+      en: {
+        myNS: {
+          keyOne: 'key one',
+          keyTwo: 'key two'
+        }
+      }
+    }
+
+    before((done) => {
+      i18nInst = i18next.createInstance();
+      i18nInst.use(Backend).init({
+        // debug: true,
+        fallbackLng: 'en',
+        ns: [],
+        backend: {
+          refreshExpirationTime: 200,
+          cacheHitMode: 'refreshAndUpdateStore',
+          backends: [
+            MockBackend,
+            resourcesToBackend((language, namespace) => ({ ...myResources[language][namespace] }))
+          ],
+          backendOptions: [{
+            name: 'cache1',
+            lngs: ['de', 'en'],
+            isCache: true
+          }]
+        }
+      }, done);
+    });
+
+    it('should load / cache data', (done) => {
+      i18nInst.loadNamespaces('myNS', () => {
+        expect(i18nInst.t('keyOne', { ns: 'myNS' })).to.eql('key one');
+
+        // simulate changed translations
+        myResources.en.myNS.keyOne += ' changed';
+        
+        i18nInst.reloadResources(['en'], ['myNS'], () => {
+          // give a chance to update
+          setImmediate(() => {
+            expect(i18nInst.t('keyOne', { ns: 'myNS' })).to.eql('key one'); // still not expired
+            
+            setTimeout(() => {
+              i18nInst.reloadResources(['en'], ['myNS'], () => {
+                // give a chance to update
+              setImmediate(() => {
+                expect(i18nInst.t('keyOne', { ns: 'myNS' })).to.eql('key one changed');
+                done();
+              });
+              })
+            }, 210)
+          });
+        });
+      });
+    });
+
+  });
+
 });

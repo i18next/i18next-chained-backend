@@ -5,6 +5,7 @@ function getDefaults() {
     handleEmptyResourcesAsFailed: true,
     cacheHitMode: 'none',
     // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
+    // refreshExpirationTime: 60 * 60 * 1000
   }
 }
 
@@ -65,11 +66,12 @@ class Backend {
 
       const backend = this.backends[pos]
       if (backend.read) {
-        handleCorrectReadFunction(backend, language, namespace, (err, data) => {
+        handleCorrectReadFunction(backend, language, namespace, (err, data, savedAt) => {
           if (!err && data && Object.keys(data).length > lengthCheckAmount) {
             callback(null, data, pos)
             savePosition(pos - 1, data) // save one in front
             if (backend.save && this.options.cacheHitMode && ['refresh', 'refreshAndUpdateStore'].indexOf(this.options.cacheHitMode) > -1) {
+              if (savedAt && this.options.refreshExpirationTime && savedAt + this.options.refreshExpirationTime > Date.now()) return
               const nextBackend = this.backends[pos + 1]
               if (nextBackend && nextBackend.read) {
                 handleCorrectReadFunction(nextBackend, language, namespace, (err, data) => {
