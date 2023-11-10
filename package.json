@@ -4,11 +4,24 @@
   "description": "backend layer for i18next to chain backends",
   "main": "./dist/cjs/i18nextChainedBackend.js",
   "module": "./dist/esm/i18nextChainedBackend.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "keywords": [
     "i18next",
     "i18next-backend"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": {
+        "require": "./index.d.ts",
+        "import": "./index.d.mts"
+      },
+      "module": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
   "homepage": "https://github.com/i18next/i18next-chained-backend",
   "bugs": "https://github.com/i18next/i18next-chained-backend/issues",
   "repository": {
@@ -16,26 +29,26 @@
     "url": "https://github.com/i18next/i18next-chained-backend"
   },
   "dependencies": {
-    "@babel/runtime": "^7.22.15",
+    "@babel/runtime": "^7.23.2",
     "i18next-resources-to-backend": "1.1.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.19",
-    "@babel/plugin-transform-runtime": "^7.22.15",
-    "@babel/preset-env": "^7.22.15",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
     "babel-eslint": "^10.1.0",
     "cpy-cli": "^5.0.0",
     "dtslint": "4.2.1",
-    "eslint": "8.49.0",
+    "eslint": "8.53.0",
     "eslint-config-airbnb": "19.0.4",
     "expect.js": "0.3.1",
-    "i18next": "23.5.1",
-    "i18next-http-backend": "2.2.2",
-    "i18next-locize-backend": "6.2.3",
+    "i18next": "23.7.1",
+    "i18next-http-backend": "2.4.1",
+    "i18next-locize-backend": "6.3.1",
     "json5": "2.2.3",
     "mkdirp": "3.0.1",
     "mocha": "10.2.0",
-    "rimraf": "5.0.1",
+    "rimraf": "5.0.5",
     "rollup": "^2.78.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",

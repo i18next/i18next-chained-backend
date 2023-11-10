@@ -1,3 +1,7 @@
+### 4.6.0
+
+- fix: separate cjs and mjs typings
+
 ### 4.5.0
 
 - introduce refreshExpirationTime
