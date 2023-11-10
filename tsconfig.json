@@ -9,11 +9,10 @@
     "strict": true,
     "noEmit": true,
     "baseUrl": ".",
-    "paths": { "i18next-chained-backend": ["./index.d.mts"] },
-
+    "paths": { "i18next-chained-backend": ["./index.d.ts"] },
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["./index.d.mts", "./test/**/*"],
+  "include": ["./index.d.ts", "./test/**/*"],
   "exclude": []
 }
