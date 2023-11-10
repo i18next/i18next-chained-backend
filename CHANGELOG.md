@@ -1,3 +1,7 @@
+### 4.6.1
+
+- fix package exports
+
 ### 4.6.0
 
 - fix: separate cjs and mjs typings
