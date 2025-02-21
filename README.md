@@ -132,9 +132,9 @@ i18next
 ```
 
 *More [locize](https://locize.com) examples can be found here:*
-- *[Caching](https://docs.locize.com/more/caching/alternative-caching)*
-- *[Backend Fallback](https://docs.locize.com/more/backend-fallback)*
-- *[Multiple projects in same i18next instance](https://docs.locize.com/more/general-questions/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website)*
+- *[Caching](https://www.locize.com/docs/alternative-caching-with-i18next)*
+- *[Backend Fallback](https://www.locize.com/docs/backend-fallback)*
+- *[Multiple projects in same i18next instance](https://www.locize.com/docs/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website)*
 
 ## TypeScript
 
@@ -173,7 +173,7 @@ We suggest not to use mutliple backends in combination with saveMissing or updat
 <h3 align="center">Gold Sponsors</h3>
 
 <p align="center">
-  <a href="https://locize.com/" target="_blank">
+  <a href="https://locize.com" target="_blank">
     <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
   </a>
 </p>
@@ -184,7 +184,7 @@ We suggest not to use mutliple backends in combination with saveMissing or updat
 
 Needing a translation management? Want to edit your translations with an InContext Editor? Use the orginal provided to you by the maintainers of i18next!
 
-![locize](https://locize.com/img/ads/github_locize.png)
+![locize](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a6f/67b8bbb29365c3a3c21c0898_github_locize.png)
 
 With using [locize](http://locize.com/?utm_source=react_i18next_readme&utm_medium=github) you directly support the future of i18next and react-i18next.
 
