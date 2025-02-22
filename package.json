@@ -33,7 +33,7 @@
     "i18next-locize-backend": "6.3.1",
     "json5": "2.2.3",
     "mkdirp": "3.0.1",
-    "mocha": "10.2.0",
+    "mocha": "10.8.2",
     "rimraf": "5.0.5",
     "rollup": "^2.78.1",
     "rollup-plugin-babel": "^4.4.0",
