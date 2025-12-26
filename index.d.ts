@@ -1,4 +1,8 @@
-import { BackendModule, ReadCallback } from "i18next";
+import { BackendModule, type ReadCallback } from "i18next";
+
+export type ChainedReadCallback = (
+  ...args: [...Parameters<ReadCallback>, timestamp?: number]
+) => ReturnType<ReadCallback>;
 
 export interface ChainedBackendOptions {
   /**
@@ -44,7 +48,7 @@ export default class I18NextChainedBackend
   read(
     language: string,
     namespace: string,
-    callback: ReadCallback
+    callback: ChainedReadCallback
   ): void;
   create(
     languages: string[],
