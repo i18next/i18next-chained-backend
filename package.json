@@ -1,6 +1,6 @@
 {
   "name": "i18next-chained-backend",
-  "version": "4.6.2",
+  "version": "4.6.3",
   "description": "backend layer for i18next to chain backends",
   "main": "./dist/cjs/i18nextChainedBackend.js",
   "module": "./dist/esm/i18nextChainedBackend.js",
