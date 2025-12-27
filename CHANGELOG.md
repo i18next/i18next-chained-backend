@@ -1,3 +1,7 @@
+### 4.6.3
+
+- Fix read-callback typing #39
+
 ### 4.6.2
 
 - fix package exports
