@@ -57,4 +57,4 @@ class MockBackend {
 }
 MockBackend.type = 'backend';
 
-module.exports = MockBackend;
+export default MockBackend;

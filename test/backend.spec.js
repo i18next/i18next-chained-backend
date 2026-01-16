@@ -1,8 +1,8 @@
-const expect = require('expect.js')
-const Backend = require('../');
-const i18next = require('i18next');
-const MockBackend = require('./MockBackend');
-const resourcesToBackend = require('i18next-resources-to-backend');
+import expect from 'expect.js'
+import Backend from '../index.js'
+import i18next from 'i18next'
+import MockBackend from './MockBackend.js'
+import resourcesToBackend from 'i18next-resources-to-backend'
 
 describe('chained backend', () => {
 

@@ -1,3 +1,7 @@
+### 5.0.0
+
+- fix TS issue (needed to switch to ESM by default) [#43]
+
 ### 4.6.3
 
 - Fix read-callback typing #39
