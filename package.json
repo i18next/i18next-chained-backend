@@ -9,14 +9,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": {
-        "require": "./cjs/index.d.ts",
-        "import": "./esm/index.d.mts"
+      "import": {
+        "types": "./index.d.mts",
+        "default": "./dist/esm/index.js"
       },
-      "module": "./dist/esm/index.js",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "default": "./dist/esm/index.js"
+      "require": {
+        "types": "./index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
     },
     "./cjs": {
       "types": "./cjs/index.d.ts",

@@ -1,6 +1,10 @@
+### 5.0.1
+
+- try to adapt packag export to address #44
+
 ### 5.0.0
 
-- fix TS issue (needed to switch to ESM by default) [#43]
+- fix TS issue (needed to switch to ESM by default) #43
 
 ### 4.6.3
 
