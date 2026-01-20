@@ -1,6 +1,10 @@
+### 5.0.2
+
+- try to fix commonjs build to address #45
+
 ### 5.0.1
 
-- try to adapt packag export to address #44
+- try to adapt package export to address #44
 
 ### 5.0.0
 
