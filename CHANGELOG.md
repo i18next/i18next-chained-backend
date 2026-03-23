@@ -1,3 +1,7 @@
+### 5.0.3
+
+- warn when using saveMissing/updateMissing with multiple backends
+
 ### 5.0.2
 
 - try to fix commonjs build to address #45

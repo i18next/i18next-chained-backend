@@ -116,6 +116,11 @@
         this.services = services;
         this.options = defaults(options, this.options || {}, getDefaults());
         this.allOptions = i18nextOptions;
+        if (this.options.backends && this.options.backends.length > 1 && (this.allOptions.saveMissing || this.allOptions.updateMissing)) {
+          if (this.services && this.services.logger) {
+            this.services.logger.warn('i18next-chained-backend: Using multiple backends in combination with saveMissing/updateMissing is not recommended, as it may trigger based on stale data.');
+          }
+        }
         this.options.backends && this.options.backends.forEach(function (b, i) {
           _this.backends[i] = _this.backends[i] || createClassOnDemand(b);
           _this.backends[i].init(services, _this.options.backendOptions && _this.options.backendOptions[i] || {}, i18nextOptions);

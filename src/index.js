@@ -46,6 +46,12 @@ class Backend {
     this.options = utils.defaults(options, this.options || {}, getDefaults())
     this.allOptions = i18nextOptions
 
+    if ((this.options.backends && this.options.backends.length > 1) && (this.allOptions.saveMissing || this.allOptions.updateMissing)) {
+      if (this.services && this.services.logger) {
+        this.services.logger.warn('i18next-chained-backend: Using multiple backends in combination with saveMissing/updateMissing is not recommended, as it may trigger based on stale data.')
+      }
+    }
+
     this.options.backends && this.options.backends.forEach((b, i) => {
       this.backends[i] = this.backends[i] || utils.createClassOnDemand(b)
       this.backends[i].init(services, (this.options.backendOptions && this.options.backendOptions[i]) || {}, i18nextOptions)
