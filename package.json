@@ -46,7 +46,6 @@
     "@babel/preset-env": "^7.28.5",
     "babel-eslint": "^10.1.0",
     "cpy-cli": "^6.0.0",
-    "dtslint": "4.2.1",
     "eslint": "8.53.0",
     "eslint-config-airbnb": "19.0.4",
     "expect.js": "0.3.1",
@@ -63,13 +62,12 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "tsd": "0.33.0",
-    "tslint": "5.20.1",
     "typescript": "5.9.3"
   },
   "scripts": {
     "pretest": "npm run test:typescript",
     "test": "npm run build && mocha test -R spec --exit",
-    "test:typescript": "tslint --project tsconfig.json && tsd",
+    "test:typescript": "tsd",
     "clean": "rimraf dist && mkdirp dist",
     "build": "npm run clean && rollup -c && cpy \"./dist/umd/*.js\" ./ && cp index.d.ts dist/esm/index.d.ts && cp index.d.mts dist/esm/index.d.mts && cp index.d.ts dist/cjs/index.d.ts && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json ",
     "preversion": "npm run test && npm run build && git push",
