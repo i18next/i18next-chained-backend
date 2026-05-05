@@ -131,10 +131,10 @@ i18next
   });
 ```
 
-*More [locize](https://locize.com) examples can be found here:*
-- *[Caching](https://www.locize.com/docs/alternative-caching-with-i18next)*
-- *[Backend Fallback](https://www.locize.com/docs/backend-fallback)*
-- *[Multiple projects in same i18next instance](https://www.locize.com/docs/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website)*
+*More [locize](https://www.locize.com?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme) examples can be found here:*
+- *[Caching](https://www.locize.com/docs/caching/alternative-caching-with-i18next?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme)*
+- *[Backend Fallback](https://www.locize.com/docs/backend-fallback?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme)*
+- *[Multiple projects in same i18next instance](https://www.locize.com/docs/general-questions/is-it-possible-to-integrate-multiple-projects-in-the-same-app-website?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme)*
 
 ## TypeScript
 
@@ -173,7 +173,7 @@ We suggest not to use mutliple backends in combination with saveMissing or updat
 <h3 align="center">Gold Sponsors</h3>
 
 <p align="center">
-  <a href="https://locize.com" target="_blank">
+  <a href="https://www.locize.com?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme" target="_blank">
     <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
   </a>
 </p>
@@ -186,6 +186,6 @@ Needing a translation management? Want to edit your translations with an InConte
 
 ![locize](https://www.locize.com/img/ads/github_locize.png)
 
-With using [locize](http://locize.com/?utm_source=react_i18next_readme&utm_medium=github) you directly support the future of i18next and react-i18next.
+With using [locize](https://www.locize.com/?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme) you directly support the future of i18next and react-i18next.
 
 ---
