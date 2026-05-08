@@ -1,3 +1,8 @@
+### 5.0.4
+
+- fix: signal retry to i18next when all chained backends fail
+#51
+
 ### 5.0.3
 
 - warn when using saveMissing/updateMissing with multiple backends
