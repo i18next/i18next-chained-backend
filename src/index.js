@@ -66,7 +66,7 @@ class Backend {
     let bLen = this.backends.length
 
     const loadPosition = (pos) => {
-      if (pos >= bLen) return callback(new Error('non of the backend loaded data', true)) // failed pass retry flag
+      if (pos >= bLen) return callback(new Error('non of the backend loaded data'), true) // failed pass retry flag
       const isLastBackend = pos === bLen - 1
       const lengthCheckAmount = this.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1
 
