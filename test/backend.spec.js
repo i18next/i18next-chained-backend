@@ -99,6 +99,38 @@ describe('chained backend', () => {
 
   });
 
+  describe('all backends fail', () => {
+    let backend;
+
+    before(() => {
+      backend = new Backend({
+        interpolator: i18next.services.interpolator
+      }, {
+        backends: [
+          MockBackend,
+          MockBackend
+        ],
+        backendOptions: [{
+          name: 'backend1',
+          lngs: ['de']
+        }, {
+          name: 'backend2',
+          lngs: ['en']
+        }]
+      });
+    });
+
+    it('should signal retry to i18next when all backends fail', (done) => {
+      backend.read('fr', 'test', function(err, retry) {
+        expect(err).to.be.an(Error);
+        expect(err.message).to.eql('non of the backend loaded data');
+        expect(retry).to.eql(true);
+        done();
+      });
+    });
+
+  });
+
   describe('refresh cache', () => {
     let backend;
     const myResources = {
