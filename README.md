@@ -11,6 +11,10 @@ Usage examples for caching configurations can be found [here](https://www.i18nex
 For each [backend read call](https://www.i18next.com/misc/creating-own-plugins#backend) (so for each language and namespace combination), it will try to read from from all backends in order until a backend returns some resources.
 So if it does not find the resource (language + namespace) in the first backend, it goes to the next, etc.
 
+## Advice:
+
+If you don't like to manage your translation files manually or are simply looking for a [better management solution](https://www.locize.com?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme), take a look at [i18next-locize-backend](https://github.com/locize/i18next-locize-backend) — it works as one of the chained backends (typically the network fallback). The i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends) for 🌐 [Locize](https://www.locize.com?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme) ☁️.
+
 # Getting started
 
 Source can be loaded via [npm](https://www.npmjs.com/package/i18next-chained-backend) or [downloaded](https://github.com/i18next/i18next-chained-backend/blob/master/i18nextBackendBackend.min.js) from this repo.
@@ -184,8 +188,8 @@ We suggest not to use mutliple backends in combination with saveMissing or updat
 
 Needing a translation management? Want to edit your translations with an InContext Editor? Use the orginal provided to you by the maintainers of i18next!
 
-![locize](https://www.locize.com/img/ads/github_locize.png)
+![Locize](https://www.locize.com/img/ads/github_locize.png)
 
-With using [locize](https://www.locize.com/?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme) you directly support the future of i18next and react-i18next.
+With using [Locize](https://www.locize.com/?utm_source=i18next_chained_backend_readme&utm_medium=github&utm_campaign=readme) you directly support the future of i18next and react-i18next.
 
 ---
