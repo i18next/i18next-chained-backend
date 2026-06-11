@@ -34,6 +34,15 @@ export interface ChainedBackendOptions {
    * @default undefined
    */
   refreshExpirationTime?: number;
+
+  /**
+   * If true, signals i18next to retry the read (with its default backoff behaviour)
+   * when none of the chained backends was able to load the requested namespace.
+   * Keep it disabled if missing namespaces are expected (e.g. when relying on fallback languages),
+   * since retries would delay the fallback resolution.
+   * @default false
+   */
+  retryOnFailure?: boolean;
 }
 
 export default class I18NextChainedBackend

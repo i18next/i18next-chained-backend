@@ -68,7 +68,8 @@
   function getDefaults() {
     return {
       handleEmptyResourcesAsFailed: true,
-      cacheHitMode: 'none'
+      cacheHitMode: 'none',
+      retryOnFailure: false
       // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
       // refreshExpirationTime: 60 * 60 * 1000
     };
@@ -137,7 +138,7 @@
         var _this2 = this;
         var bLen = this.backends.length;
         var _loadPosition = function loadPosition(pos) {
-          if (pos >= bLen) return callback(new Error('non of the backend loaded data'), true); // failed pass retry flag
+          if (pos >= bLen) return callback(new Error('non of the backend loaded data'), _this2.options.retryOnFailure); // failed, signal retry to i18next only if explicitly enabled
           var isLastBackend = pos === bLen - 1;
           var lengthCheckAmount = _this2.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1;
           var backend = _this2.backends[pos];

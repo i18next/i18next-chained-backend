@@ -4,6 +4,7 @@ function getDefaults() {
   return {
     handleEmptyResourcesAsFailed: true,
     cacheHitMode: 'none',
+    retryOnFailure: false,
     // reloadInterval: typeof window !== 'undefined' ? false : 60 * 60 * 1000
     // refreshExpirationTime: 60 * 60 * 1000
   }
@@ -66,7 +67,7 @@ class Backend {
     let bLen = this.backends.length
 
     const loadPosition = (pos) => {
-      if (pos >= bLen) return callback(new Error('non of the backend loaded data'), true) // failed pass retry flag
+      if (pos >= bLen) return callback(new Error('non of the backend loaded data'), this.options.retryOnFailure) // failed, signal retry to i18next only if explicitly enabled
       const isLastBackend = pos === bLen - 1
       const lengthCheckAmount = this.options.handleEmptyResourcesAsFailed && !isLastBackend ? 0 : -1
 

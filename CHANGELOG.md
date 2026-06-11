@@ -1,3 +1,7 @@
+### 5.0.5
+
+- fix: do not signal retry to i18next by default when all chained backends fail, introduce opt-in retryOnFailure option #53
+
 ### 5.0.4
 
 - fix: signal retry to i18next when all chained backends fail
