@@ -49,10 +49,18 @@
   var arr = [];
   var each = arr.forEach;
   var slice = arr.slice;
+  var UNSAFE_KEYS = ['__proto__', 'constructor', 'prototype'];
+
+  // Own enumerable keys only, skipping prototype keys. `for...in` walks the
+  // prototype chain, so an already-polluted Object.prototype would be copied
+  // into the options object, and a source parsed from JSON carries `__proto__`
+  // as an own key whose assignment would reassign the target's prototype.
   function defaults(obj) {
     each.call(slice.call(arguments, 1), function (source) {
       if (source) {
-        for (var prop in source) {
+        for (var _i = 0, _Object$keys = Object.keys(source); _i < _Object$keys.length; _i++) {
+          var prop = _Object$keys[_i];
+          if (UNSAFE_KEYS.indexOf(prop) > -1) continue;
           if (obj[prop] === undefined) obj[prop] = source[prop];
         }
       }

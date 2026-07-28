@@ -1,3 +1,8 @@
+### 5.0.6
+
+- chore: removed the unused `extend()` helper from `utils`. It merged with `for...in` and no own-property check, so a source object carrying an own `__proto__` key (as `JSON.parse` produces) reassigned the target's prototype. Nothing in the package called it and rollup already tree-shook it out of every published bundle, so this is a source cleanup with no effect on consumers.
+- chore: `defaults()` now iterates own enumerable keys only and skips `__proto__` / `constructor` / `prototype`. Its existing `=== undefined` check already blocked the pollution paths, so this is defense in depth and aligns the helper with the equivalents in `i18next-http-backend`, `i18next-fs-backend` and `i18next-http-middleware`.
+
 ### 5.0.5
 
 - fix: do not signal retry to i18next by default when all chained backends fail, introduce opt-in retryOnFailure option #53
