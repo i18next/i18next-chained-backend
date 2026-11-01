@@ -82,9 +82,17 @@
       // refreshExpirationTime: 60 * 60 * 1000
     };
   }
+
+  // an inner backend's callbackApi (true: callbacks, false: promises or values) decides, like in i18next >= 26.7;
+  // without it the number of parameters does, as before
+  function callbackApiOf(backend) {
+    if (backend.callbackApi !== undefined) return backend.callbackApi;
+    return backend.constructor && backend.constructor.callbackApi;
+  }
   function handleCorrectReadFunction(backend, language, namespace, resolver) {
     var fc = backend.read.bind(backend);
-    if (fc.length === 2) {
+    var callbackApi = callbackApiOf(backend);
+    if (callbackApi === false || callbackApi === undefined && fc.length === 2) {
       // no callback
       try {
         var r = fc(language, namespace);
@@ -199,11 +207,12 @@
         this.backends.forEach(function (b) {
           if (!b.create) return;
           var fc = b.create.bind(b);
-          if (fc.length < 6) {
+          var callbackApi = callbackApiOf(b);
+          if (callbackApi === false || callbackApi === undefined && fc.length < 6) {
             // no callback
             try {
               var r;
-              if (fc.length === 5) {
+              if (callbackApi === false || fc.length === 5) {
                 // future callback-less api for i18next-locize-backend
                 r = fc(languages, namespace, key, fallbackValue, opts);
               } else {
@@ -235,7 +244,8 @@
         var _this$services = this.services,
           backendConnector = _this$services.backendConnector,
           languageUtils = _this$services.languageUtils,
-          logger = _this$services.logger;
+          logger = _this$services.logger,
+          utils = _this$services.utils;
         var currentLanguage = backendConnector.language;
         if (currentLanguage && currentLanguage.toLowerCase() === 'cimode') return; // avoid loading resources for cimode
 
@@ -250,6 +260,9 @@
         if (this.allOptions.preload) this.allOptions.preload.forEach(function (l) {
           return append(l);
         });
+
+        // i18next >= 26.7 reloads through its public path (with retries and the loaded event)
+        if (utils && utils.reloadResources) return utils.reloadResources(toLoad, this.allOptions.ns);
         toLoad.forEach(function (lng) {
           _this3.allOptions.ns.forEach(function (ns) {
             backendConnector.read(lng, ns, 'read', null, null, function (err, data) {
@@ -263,6 +276,9 @@
     }]);
   }();
   Backend.type = 'backend';
+  // i18next >= 26.7 calls read and create with a callback (and create with the options too) instead of
+  // guessing that from the number of parameters
+  Backend.callbackApi = true;
 
   return Backend;
 
