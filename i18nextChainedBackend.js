@@ -246,6 +246,9 @@
           languageUtils = _this$services.languageUtils,
           logger = _this$services.logger,
           utils = _this$services.utils;
+        // i18next >= 26.7.1 reloads what it loaded through this backend: the current languages and every
+        // language loaded or tried for the instance and its clones, retrying the bundles that failed
+        if (utils && utils.reloadResources) return utils.reloadResources();
         var currentLanguage = backendConnector.language;
         if (currentLanguage && currentLanguage.toLowerCase() === 'cimode') return; // avoid loading resources for cimode
 
@@ -260,9 +263,6 @@
         if (this.allOptions.preload) this.allOptions.preload.forEach(function (l) {
           return append(l);
         });
-
-        // i18next >= 26.7 reloads through its public path (with retries and the loaded event)
-        if (utils && utils.reloadResources) return utils.reloadResources(toLoad, this.allOptions.ns);
         toLoad.forEach(function (lng) {
           _this3.allOptions.ns.forEach(function (ns) {
             backendConnector.read(lng, ns, 'read', null, null, function (err, data) {
