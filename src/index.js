@@ -10,9 +10,17 @@ function getDefaults() {
   }
 }
 
+// an inner backend's callbackApi (true: callbacks, false: promises or values) decides, like in i18next >= 26.7;
+// without it the number of parameters does, as before
+function callbackApiOf(backend) {
+  if (backend.callbackApi !== undefined) return backend.callbackApi
+  return backend.constructor && backend.constructor.callbackApi
+}
+
 function handleCorrectReadFunction(backend, language, namespace, resolver) {
   const fc = backend.read.bind(backend)
-  if (fc.length === 2) {
+  const callbackApi = callbackApiOf(backend)
+  if (callbackApi === false || (callbackApi === undefined && fc.length === 2)) {
     // no callback
     try {
       const r = fc(language, namespace)
@@ -123,11 +131,12 @@ class Backend {
       if (!b.create) return
 
       const fc = b.create.bind(b)
-      if (fc.length < 6) {
+      const callbackApi = callbackApiOf(b)
+      if (callbackApi === false || (callbackApi === undefined && fc.length < 6)) {
         // no callback
         try {
           let r
-          if (fc.length === 5) { // future callback-less api for i18next-locize-backend
+          if (callbackApi === false || fc.length === 5) { // future callback-less api for i18next-locize-backend
             r = fc(languages, namespace, key, fallbackValue, opts)
           } else {
             r = fc(languages, namespace, key, fallbackValue)
@@ -151,7 +160,7 @@ class Backend {
   }
 
   reload () {
-    const { backendConnector, languageUtils, logger } = this.services
+    const { backendConnector, languageUtils, logger, utils } = this.services
     const currentLanguage = backendConnector.language
     if (currentLanguage && currentLanguage.toLowerCase() === 'cimode') return // avoid loading resources for cimode
 
@@ -167,6 +176,9 @@ class Backend {
 
     if (this.allOptions.preload) this.allOptions.preload.forEach((l) => append(l))
 
+    // i18next >= 26.7 reloads through its public path (with retries and the loaded event)
+    if (utils && utils.reloadResources) return utils.reloadResources(toLoad, this.allOptions.ns)
+
     toLoad.forEach(lng => {
       this.allOptions.ns.forEach(ns => {
         backendConnector.read(lng, ns, 'read', null, null, (err, data) => {
@@ -181,5 +193,8 @@ class Backend {
 }
 
 Backend.type = 'backend'
+// i18next >= 26.7 calls read and create with a callback (and create with the options too) instead of
+// guessing that from the number of parameters
+Backend.callbackApi = true
 
 export default Backend
