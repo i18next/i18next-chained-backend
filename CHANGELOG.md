@@ -1,3 +1,9 @@
+### 5.0.7
+
+- fix: with i18next 26.7.0 or later, `create` gets its options (`isUpdate`). i18next 26.7.0 deprecates guessing the calling convention of a backend from the number of parameters of its methods; the backend now declares it with `callbackApi`, so i18next calls `read` and `create` with a callback (and passes `create` its options), and debug mode no longer logs the deprecation notice. Older i18next versions ignore it. Its `create(languages, namespace, key, fallbackValue, clb = () => {}, opts = {})` has a `Function.length` of 4 because of the default parameters, so i18next called it without the options.
+- feat: the chained backends are called the way their own `callbackApi` declares (`true`: callbacks, `false`: a promise or a value), like i18next 26.7 does; without it, the number of parameters decides, as before.
+- `reloadInterval` reloads through `services.utils.reloadResources` with i18next 26.7.0 or later (with i18next's retries and the `loaded` event) instead of calling i18next's internal backend connector. It reloads the same languages as before: the fallback and `preload` languages. With older i18next nothing changes.
+
 ### 5.0.6
 
 - chore: removed the unused `extend()` helper from `utils`. It merged with `for...in` and no own-property check, so a source object carrying an own `__proto__` key (as `JSON.parse` produces) reassigned the target's prototype. Nothing in the package called it and rollup already tree-shook it out of every published bundle, so this is a source cleanup with no effect on consumers.
