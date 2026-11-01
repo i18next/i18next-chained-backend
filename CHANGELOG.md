@@ -1,3 +1,7 @@
+### 5.0.8
+
+- fix: with i18next 26.7.1 or later, `reloadInterval` reloads everything i18next loaded or tried to load through the backend: the current languages and the languages loaded for clones (one per request on a server), and it retries the bundles that failed. 5.0.7 passed the fallback and `preload` languages to i18next's `reloadResources()`, which skipped a bundle that had failed to load, so a language missing after an outage at startup stayed missing (the backend's own reload before 5.0.7 read it again). With older i18next nothing changes.
+
 ### 5.0.7
 
 - fix: with i18next 26.7.0 or later, `create` gets its options (`isUpdate`). i18next 26.7.0 deprecates guessing the calling convention of a backend from the number of parameters of its methods; the backend now declares it with `callbackApi`, so i18next calls `read` and `create` with a callback (and passes `create` its options), and debug mode no longer logs the deprecation notice. Older i18next versions ignore it. Its `create(languages, namespace, key, fallbackValue, clb = () => {}, opts = {})` has a `Function.length` of 4 because of the default parameters, so i18next called it without the options.
