@@ -1,3 +1,7 @@
+### 5.1.0
+
+- fix: an inner backend whose `read` returns a value or a promise is answered once. When the i18next callback threw (for example from a `loaded` listener or the callback of `init` or `loadNamespaces`), or saving to an earlier backend in the chain threw, the error counted as a failed read: the next backend was read, i18next was called back again, once per backend, and the namespace could end up marked as failed. The error now reaches your app: thrown from the call that started the load for a `read` that returns a value, and an unhandled rejection for a `read` that returns a promise, which ends a Node.js process unless you handle `unhandledRejection`. Thanks [@SudeepGowda55](https://github.com/SudeepGowda55) ([#63](https://github.com/i18next/i18next-chained-backend/pull/63))
+
 ### 5.0.8
 
 - fix: with i18next 26.7.1 or later, `reloadInterval` reloads everything i18next loaded or tried to load through the backend: the current languages and the languages loaded for clones (one per request on a server), and it retries the bundles that failed. 5.0.7 passed the fallback and `preload` languages to i18next's `reloadResources()`, which skipped a bundle that had failed to load, so a language missing after an outage at startup stayed missing (the backend's own reload before 5.0.7 read it again). With older i18next nothing changes.
