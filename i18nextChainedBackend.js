@@ -94,19 +94,21 @@
     var callbackApi = callbackApiOf(backend);
     if (callbackApi === false || callbackApi === undefined && fc.length === 2) {
       // no callback
+      var r;
       try {
-        var r = fc(language, namespace);
-        if (r && typeof r.then === 'function') {
-          // promise
-          r.then(function (data) {
-            return resolver(null, data);
-          })["catch"](resolver);
-        } else {
-          // sync
-          resolver(null, r);
-        }
+        r = fc(language, namespace);
       } catch (err) {
-        resolver(err);
+        return resolver(err);
+      }
+      // outside the try and not with .catch(): an error thrown by the callback must not read from the next backend
+      if (r && typeof r.then === 'function') {
+        // promise
+        r.then(function (data) {
+          return resolver(null, data);
+        }, resolver);
+      } else {
+        // sync
+        resolver(null, r);
       }
       return;
     }
