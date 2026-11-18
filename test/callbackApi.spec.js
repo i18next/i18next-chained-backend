@@ -43,4 +43,16 @@ describe('chained backend with i18next 26.7', () => {
     // i18next >= 26.7.1 decides what to reload: everything it loaded or tried through the backend
     expect(calls).to.eql([[]])
   })
+
+  it('calls back once when the callback throws', () => {
+    const syncBackend = { init () {}, callbackApi: false, read: () => ({ from: 'sync' }) }
+    const fallbackBackend = { init () {}, callbackApi: false, read: () => ({ from: 'fallback' }) }
+    const backend = new Backend({}, { backends: [syncBackend, fallbackBackend] })
+    let calls = 0
+    expect(() => backend.read('en', 'translation', () => {
+      calls++
+      throw new Error('callback failed')
+    })).to.throwError(/callback failed/)
+    expect(calls).to.be(1)
+  })
 })
