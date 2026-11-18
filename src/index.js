@@ -22,17 +22,19 @@ function handleCorrectReadFunction(backend, language, namespace, resolver) {
   const callbackApi = callbackApiOf(backend)
   if (callbackApi === false || (callbackApi === undefined && fc.length === 2)) {
     // no callback
+    let r
     try {
-      const r = fc(language, namespace)
-      if (r && typeof r.then === 'function') {
-        // promise
-        r.then((data) => resolver(null, data)).catch(resolver)
-      } else {
-        // sync
-        resolver(null, r)
-      }
+      r = fc(language, namespace)
     } catch (err) {
-      resolver(err)
+      return resolver(err)
+    }
+    // outside the try and not with .catch(): an error thrown by the callback must not read from the next backend
+    if (r && typeof r.then === 'function') {
+      // promise
+      r.then((data) => resolver(null, data), resolver)
+    } else {
+      // sync
+      resolver(null, r)
     }
     return
   }
