@@ -1,4 +1,4 @@
-### Unreleased
+### 5.1.1
 
 - fix(types): the typings compile on TypeScript 5.0 and 5.1 with `skipLibCheck: false`. `ChainedReadCallback` mixed a labelled and an unlabelled tuple member, which TypeScript accepts only since 5.2 (TS5084).
 
