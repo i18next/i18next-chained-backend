@@ -1,7 +1,7 @@
 import { BackendModule, type ReadCallback } from "i18next";
 
 export type ChainedReadCallback = (
-  ...args: [...Parameters<ReadCallback>, timestamp?: number]
+  ...args: [...readArgs: Parameters<ReadCallback>, timestamp?: number]
 ) => ReturnType<ReadCallback>;
 
 export interface ChainedBackendOptions {

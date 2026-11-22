@@ -1,3 +1,7 @@
+### Unreleased
+
+- fix(types): the typings compile on TypeScript 5.0 and 5.1 with `skipLibCheck: false`. `ChainedReadCallback` mixed a labelled and an unlabelled tuple member, which TypeScript accepts only since 5.2 (TS5084).
+
 ### 5.1.0
 
 - fix: an inner backend whose `read` returns a value or a promise is answered once. When the i18next callback threw (for example from a `loaded` listener or the callback of `init` or `loadNamespaces`), or saving to an earlier backend in the chain threw, the error counted as a failed read: the next backend was read, i18next was called back again, once per backend, and the namespace could end up marked as failed. The error now reaches your app: thrown from the call that started the load for a `read` that returns a value, and an unhandled rejection for a `read` that returns a promise, which ends a Node.js process unless you handle `unhandledRejection`. Thanks [@SudeepGowda55](https://github.com/SudeepGowda55) ([#63](https://github.com/i18next/i18next-chained-backend/pull/63))

@@ -67,7 +67,8 @@
   "scripts": {
     "pretest": "npm run test:typescript",
     "test": "npm run build && mocha test -R spec --exit",
-    "test:typescript": "tsd",
+    "test:typescript": "tsd && npm run test:typescript:floor",
+    "test:typescript:floor": "npx --yes -p typescript@5.0 tsc -p tsconfig.floor.json",
     "clean": "rimraf dist && mkdirp dist",
     "build": "npm run clean && rollup -c && cpy \"./dist/umd/*.js\" ./ && cp index.d.ts dist/esm/index.d.ts && cp index.d.mts dist/esm/index.d.mts && cp index.d.ts dist/cjs/index.d.ts && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json ",
     "preversion": "npm run test && npm run build && git push",

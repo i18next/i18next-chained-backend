@@ -12,6 +12,7 @@ karma.conf.js
 .coveralls.yml
 rollup.config.js
 tsconfig.json
+tsconfig.floor.json
 # npm ignores .gitignore once .npmignore exists, so local/secret files are mirrored here
 .claude
 .vscode
